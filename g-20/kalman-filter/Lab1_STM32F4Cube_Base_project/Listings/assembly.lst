@@ -1,0 +1,136 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             text, CODE, READONLY
+    2 00000000                 EXPORT           test
+    3 00000000                 IMPORT           Kalmanfilter_asm
+    4 00000000         
+    5 00000000         ; r0: address of output array
+    6 00000000         ; r1: address of input array
+    7 00000000         ; r2: no. of elements in the array
+    8 00000000         ; r3: address of kalman filter state
+    9 00000000         
+   10 00000000         ; initialization
+   11 00000000 00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+              00000000 Output  DCFS             0, 0, 0, 0, 0, 0
+   12 00000018         
+   13 00000018 BF2A555C 
+              BEA8F430 
+              3E286983 
+              3D341180 
+              3E977E3D 
+              BF24A4B1 Input   DCFS             -0.665365, -0.329988, 0.164465,
+ 0.043962, 0.295885, -0.643138
+   14 00000030         
+   15 00000030 3DCCCCCD 
+              3DCCCCCD 
+              00000000 
+              3DCCCCCD 
+              00000000 Struct  DCFS             0.1, 0.1, 0, 0.1, 0 
+                                                            ; q, r, x, p, k
+   16 00000044         
+   17 00000044         test
+   18 00000044         ; argument passing
+   19 00000044 4803            LDR              R0, =Output
+   20 00000046 4904            LDR              R1, =Input
+   21 00000048 F04F 0206       LDR              R2, =6
+   22 0000004C 4B03            LDR              R3, =Struct
+   23 0000004E 4D04            LDR              R5, =Kalmanfilter_asm
+   24 00000050 4728            BX               R5
+   25 00000052         
+   26 00000052         ;S1 = kinit->q = 0.1;
+   27 00000052         ;S2 = kinit->r = 0.1;
+   28 00000052         ;S3 = kinit->x = 0.39;
+   29 00000052         ;S4 = kinit->p = 0.1;
+   30 00000052         ;S5 = kinit->k = 0;
+   31 00000052         
+   32 00000052         
+   33 00000052 4770            BX               LR
+   34 00000054                 END
+              00000000 
+              00000000 
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\assembly.d -o.\objects\assembly.o -IC:\Users\asaha2\D
+ownloads\Github\microprocessor-systems\kalman-filter\Lab1_STM32F4Cube_Base_proj
+ect\RTE -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include -IC:\Keil_v5\ARM\PA
+CK\Keil\STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefi
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+ne="__UVISION_VERSION SETA 515" --predefine="_RTE_ SETA 1" --predefine="STM32F4
+07xx SETA 1" --list=.\listings\assembly.lst Sources\Assembly.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Input 00000018
+
+Symbol: Input
+   Definitions
+      At line 13 in file Sources\Assembly.s
+   Uses
+      At line 20 in file Sources\Assembly.s
+Comment: Input used once
+Output 00000000
+
+Symbol: Output
+   Definitions
+      At line 11 in file Sources\Assembly.s
+   Uses
+      At line 19 in file Sources\Assembly.s
+Comment: Output used once
+Struct 00000030
+
+Symbol: Struct
+   Definitions
+      At line 15 in file Sources\Assembly.s
+   Uses
+      At line 22 in file Sources\Assembly.s
+Comment: Struct used once
+test 00000044
+
+Symbol: test
+   Definitions
+      At line 17 in file Sources\Assembly.s
+   Uses
+      At line 2 in file Sources\Assembly.s
+Comment: test used once
+text 00000000
+
+Symbol: text
+   Definitions
+      At line 1 in file Sources\Assembly.s
+   Uses
+      None
+Comment: text unused
+5 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+Kalmanfilter_asm 00000000
+
+Symbol: Kalmanfilter_asm
+   Definitions
+      At line 3 in file Sources\Assembly.s
+   Uses
+      At line 23 in file Sources\Assembly.s
+Comment: Kalmanfilter_asm used once
+1 symbol
+342 symbols in table

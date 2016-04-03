@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}Abstract}{2}
+\contentsline {section}{\numberline {2}Problem Statement}{2}
+\contentsline {section}{\numberline {3}Theory and Hypothesis}{2}
+\contentsline {section}{\numberline {4}Implementation}{3}
+\contentsline {subsection}{\numberline {4.1}Configuring ADC and the Sensor}{3}
+\contentsline {subsection}{\numberline {4.2}Configuring Sampling Frequency}{3}
+\contentsline {subsection}{\numberline {4.3}Signal Filtering}{4}
+\contentsline {subsection}{\numberline {4.4}Data Interpretation}{4}
+\contentsline {subsection}{\numberline {4.5}Temperature Display}{4}
+\contentsline {subsection}{\numberline {4.6}Overheating Alarm}{5}
+\contentsline {section}{\numberline {5}Testing and Observations}{6}
+\contentsline {section}{\numberline {6}Conclusion}{9}
+\contentsline {section}{\numberline {7}Appendix}{10}

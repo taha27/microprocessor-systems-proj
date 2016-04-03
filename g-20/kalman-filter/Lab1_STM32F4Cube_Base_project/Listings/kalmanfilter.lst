@@ -1,0 +1,117 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             text, CODE, READONLY
+    2 00000000                 EXPORT           Kalmanfilter_asm
+    3 00000000         
+    4 00000000         ; r0: address of output array
+    5 00000000         ; r1: address of input array
+    6 00000000         ; r2: no. of elements in the array
+    7 00000000         ; r3: address of kalman filter state
+    8 00000000         
+    9 00000000         Kalmanfilter_asm
+   10 00000000         ;S1 = kinit->q = 0.1;
+   11 00000000         ;S2 = kinit->r = 0.1;
+   12 00000000         ;S3 = kinit->x = 0.39;
+   13 00000000         ;S4 = kinit->p = 0.1;
+   14 00000000         ;S5 = kinit->k = 0;
+   15 00000000         
+   16 00000000 ECD3 0A05       VLDM             R3, {S1-S5} ; load passed argum
+                                                            ents 
+   17 00000004 F04F 0401       MOV              R4, #1      ; initialize loop i
+                                                            terator 
+   18 00000008 EEF7 4A00       VMOV.F32         S9, #1      ; initialize temp f
+                                                            loat variable for m
+                                                            isc operation
+   19 0000000C         
+   20 0000000C         ; iterate through input and compute Kalman output
+   21 0000000C         UPDATE
+   22 0000000C ED91 0A00       VLDR             S0, [R1]    ; update pointer to
+                                                             input array elemen
+                                                            t
+   23 00000010 EE32 2A20       VADD.F32         S4, S4, S1  ; 'p = p + q'   
+   24 00000014 EE32 3A01       VADD.F32         S6, S4, S2  ; temp placeholder 
+                                                            for p + r     
+   25 00000018 EEC2 2A03       VDIV.F32         S5, S4, S6  ; 'k = p / (p + r)'
+                                                                  
+   26 0000001C EE30 3A61       VSUB.F32         S6, S0, S3  ; temp placeholder 
+                                                            for 'measurement - 
+                                                            x'  
+   27 00000020 EEB1 4A62       VNEG.F32         S8, S5      ; temp placeholder 
+                                                            for '-k'     
+   28 00000024 EE62 3A83       VMUL.F32         S7, S5, S6  ; temp place holder
+                                                             for 'k * (measurem
+                                                            ent - x)'
+   29 00000028 EE34 4A24       VADD.F32         S8, S8, S9  ; temp placeholder 
+                                                            for '1+(-k)'
+   30 0000002C EE71 1AA3       VADD.F32         S3, S3, S7  ; 'x = x + k * (mea
+                                                            surement - x)'
+   31 00000030 EE24 2A02       VMUL.F32         S4, S8, S4  ; 'p = (1 - k) * p'
+                                                            
+   32 00000034 EDC0 1A00       VSTR             S3, [R0]    ; write output in m
+                                                            emory
+   33 00000038 F100 0004       ADD              R0, R0, #4  ; increment output 
+                                                            address 
+   34 0000003C F101 0104       ADD              R1, R1, #4  ; increment input a
+                                                            ddress
+   35 00000040 F104 0401       ADD              R4, #1      ; increment loop it
+                                                            erator
+   36 00000044 4294            CMP              R4, R2      ; compare loop iter
+                                                            ator with specified
+                                                             array size (check 
+                                                            if anymore iteratio
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                                                            ns left)
+   37 00000046 DDE1            BLE              UPDATE      ; loop again if arr
+                                                            ay length is higher
+                                                             than the counter
+   38 00000048         
+   39 00000048 4770            BX               LR
+   40 0000004A                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=.\objects\kalmanfilter.d -o.\objects\kalmanfilter.o -IC:\Users\
+asaha2\Downloads\Github\microprocessor-systems\kalman-filter\Lab1_STM32F4Cube_B
+ase_project\RTE -IC:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include -IC:\Keil_v
+5\ARM\PACK\Keil\STM32F4xx_DFP\2.7.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include -
+-predefine="__UVISION_VERSION SETA 515" --predefine="_RTE_ SETA 1" --predefine=
+"STM32F407xx SETA 1" --list=.\listings\kalmanfilter.lst Kalmanfilter.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Kalmanfilter_asm 00000000
+
+Symbol: Kalmanfilter_asm
+   Definitions
+      At line 9 in file Kalmanfilter.s
+   Uses
+      At line 2 in file Kalmanfilter.s
+Comment: Kalmanfilter_asm used once
+UPDATE 0000000C
+
+Symbol: UPDATE
+   Definitions
+      At line 21 in file Kalmanfilter.s
+   Uses
+      At line 37 in file Kalmanfilter.s
+Comment: UPDATE used once
+text 00000000
+
+Symbol: text
+   Definitions
+      At line 1 in file Kalmanfilter.s
+   Uses
+      None
+Comment: text unused
+3 symbols
+337 symbols in table
