@@ -66,6 +66,14 @@ public class BluetoothLeService extends Service {
     public final static UUID UUID_HEART_RATE_MEASUREMENT =
             UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
 
+    // UUID declarations for temp and angles
+    public final static UUID UUID_TEMPERATURE_MEASUREMENT =
+            UUID.fromString(SampleGattAttributes.TEMPERATURE_MEASUREMENT);
+    public final static UUID UUID_ROLL_ANGLE_MEASUREMENT =
+            UUID.fromString(SampleGattAttributes.ROLL_ANGLE_MEASUREMENT);
+    public final static UUID UUID_PITCH_ANGLE_MEASUREMENT =
+            UUID.fromString(SampleGattAttributes.PITCH_ANGLE_MEASUREMENT);
+
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
@@ -126,19 +134,47 @@ public class BluetoothLeService extends Service {
         // This is special handling for the Heart Rate Measurement profile.  Data parsing is
         // carried out as per profile specifications:
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+
+        //Check the broadcast characteristic source
+        if (UUID_TEMPERATURE_MEASUREMENT.equals(characteristic.getUuid())) {
             int flag = characteristic.getProperties();
             int format = -1;
             if ((flag & 0x01) != 0) {
                 format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                Log.d(TAG, "Heart rate format UINT16.");
+                Log.d(TAG, "Temperature format UINT16.");
             } else {
                 format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                Log.d(TAG, "Heart rate format UINT8.");
+                Log.d(TAG, "Temperature format UINT8.");
             }
-            final int heartRate = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("Received heart rate: %d", heartRate));
-            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+            final int temperature = characteristic.getIntValue(format, 1);
+            Log.d(TAG, String.format("Received temperature: %d", temperature));
+            intent.putExtra(EXTRA_DATA, String.valueOf(temperature));
+        } else if (UUID_ROLL_ANGLE_MEASUREMENT.equals(characteristic.getUuid())) {
+            int flag = characteristic.getProperties();
+            int format = -1;
+            if ((flag & 0x01) != 0) {
+                format = BluetoothGattCharacteristic.FORMAT_UINT16;
+                Log.d(TAG, "Roll angle format UINT16.");
+            } else {
+                format = BluetoothGattCharacteristic.FORMAT_UINT8;
+                Log.d(TAG, "Roll angle format UINT8.");
+            }
+            final int rollAngle = characteristic.getIntValue(format, 1);
+            Log.d(TAG, String.format("Received roll angle: %d", rollAngle));
+            intent.putExtra(EXTRA_DATA, String.valueOf(rollAngle));
+        } else if (UUID_PITCH_ANGLE_MEASUREMENT.equals(characteristic.getUuid())) {
+            int flag = characteristic.getProperties();
+            int format = -1;
+            if ((flag & 0x01) != 0) {
+                format = BluetoothGattCharacteristic.FORMAT_UINT16;
+                Log.d(TAG, "Pitch angle format UINT16.");
+            } else {
+                format = BluetoothGattCharacteristic.FORMAT_UINT8;
+                Log.d(TAG, "Pitch angle format UINT8.");
+            }
+            final int pitchAngle = characteristic.getIntValue(format, 1);
+            Log.d(TAG, String.format("Received pitch angle: %d", pitchAngle));
+            intent.putExtra(EXTRA_DATA, String.valueOf(pitchAngle));
         } else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
@@ -296,8 +332,24 @@ public class BluetoothLeService extends Service {
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
-        // This is specific to Heart Rate Measurement.
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+        // This is specific to Temperature Measurement
+        if (UUID_TEMPERATURE_MEASUREMENT.equals(characteristic.getUuid())) {
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
+                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(descriptor);
+        }
+
+        // This is specific to Roll Angle Measurement
+        if (UUID_ROLL_ANGLE_MEASUREMENT.equals(characteristic.getUuid())) {
+            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
+                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
+            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+            mBluetoothGatt.writeDescriptor(descriptor);
+        }
+
+        // This is specific to Pitch Angle Measurement
+        if (UUID_PITCH_ANGLE_MEASUREMENT.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
                     UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
