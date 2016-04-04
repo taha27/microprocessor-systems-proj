@@ -1,0 +1,7 @@
+.gradle
+/local.properties
+/build
+Application/BluetoothLeGatt.iml
+Application/build.gradle
+*.iml
+.idea/*
