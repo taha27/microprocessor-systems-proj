@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,6 +105,12 @@ public class DeviceScanActivity extends ListActivity {
             case R.id.menu_stop:
                 scanLeDevice(false);
                 break;
+            case R.id.test:
+                Log.d("test", "test seleted");
+                scanLeDevice(false);
+                Intent i = new Intent( DeviceScanActivity.this, MenuListActivity.class);
+                startActivity(i);
+                break;
         }
         return true;
     }
@@ -124,7 +131,7 @@ public class DeviceScanActivity extends ListActivity {
         // Initializes list view adapter.
         mLeDeviceListAdapter = new LeDeviceListAdapter();
         setListAdapter(mLeDeviceListAdapter);
-        scanLeDevice(true);
+        scanLeDevice(false);
     }
 
     @Override

@@ -15,9 +15,12 @@
 -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_refresh"
+          android:title="@string/refresh"
           android:checkable="false"
           android:orderInCategory="1"
           android:showAsAction="ifRoom"/>
+    <item android:id="@+id/test"
+          android:title="@string/test"/>
     <item android:id="@+id/menu_scan"
           android:title="@string/menu_scan"
           android:orderInCategory="100"

@@ -35,7 +35,7 @@
 
     <application android:label="@string/Accempture"
         android:icon="@mipmap/launcher"
-        android:theme="@android:style/Theme.Holo.Light">
+        android:theme="@android:style/Theme.Material.Light.DarkActionBar">
         <activity android:name=".DeviceScanActivity"
             android:label="@string/Accempture">
             <intent-filter>
@@ -43,6 +43,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".MenuListActivity" />
         <activity android:name=".DeviceControlActivity"/>
         <service android:name=".BluetoothLeService" android:enabled="true"/>
     </application>
