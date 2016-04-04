@@ -35,7 +35,6 @@ public class SampleGattAttributes {
     public static String ROLL_ANGLE_MEASUREMENT = "e23e78a0-cf4a-11e1-8ffc-0002a5d5c51b";
     public static String PITCH_ANGLE_MEASUREMENT = "340a1b80-cf4b-11e1-ac36-0002a5d5c51b";
 
-
     static {
         // Sample Services.
         attributes.put("0000180d-0000-1000-8000-00805f9b34fb", "Heart Rate Service");
