@@ -33,11 +33,11 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
-    <application android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher"
+    <application android:label="@string/Accempture"
+        android:icon="@mipmap/launcher"
         android:theme="@android:style/Theme.Holo.Light">
         <activity android:name=".DeviceScanActivity"
-            android:label="@string/app_name">
+            android:label="@string/Accempture">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
