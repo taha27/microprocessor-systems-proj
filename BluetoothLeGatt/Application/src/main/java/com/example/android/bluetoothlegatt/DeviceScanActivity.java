@@ -108,7 +108,7 @@ public class DeviceScanActivity extends ListActivity {
             case R.id.test:
                 Log.d("test", "test seleted");
                 scanLeDevice(false);
-                Intent i = new Intent( DeviceScanActivity.this, MenuListActivity.class);
+                Intent i = new Intent( DeviceScanActivity.this, ServiceListActivity.class);
                 startActivity(i);
                 break;
         }

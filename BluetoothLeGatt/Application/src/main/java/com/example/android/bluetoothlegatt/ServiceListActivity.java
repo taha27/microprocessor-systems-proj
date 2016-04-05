@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuListActivity extends Activity {
+public class ServiceListActivity extends Activity {
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
@@ -46,13 +46,12 @@ public class MenuListActivity extends Activity {
 
         //tests data
         serviceDataItemList = new ArrayList<>();
-        serviceDataItemList.add(new ServiceDataItem("Tilt", "23"));
-        serviceDataItemList.add(new ServiceDataItem("Roll", "25"));
-        serviceDataItemList.add(new ServiceDataItem("Temperature", "35"));
-        serviceDataItemList.add(new ServiceDataItem("LED", "set values"));
+        serviceDataItemList.add(new ServiceDataItem("Tilt", "23", R.drawable.accelerometer));
+        serviceDataItemList.add(new ServiceDataItem("Roll", "25", R.drawable.accelerometer));
+        serviceDataItemList.add(new ServiceDataItem("Temperature", "35", R.drawable.temp));
+        serviceDataItemList.add(new ServiceDataItem("LED", "set values", R.drawable.temp));
 
-
-        mAdapter = new ServiceItemAdapter(serviceDataItemList);
+        mAdapter = new ServiceItemAdapter(this, serviceDataItemList);
         rv.setAdapter(mAdapter);
     }
 

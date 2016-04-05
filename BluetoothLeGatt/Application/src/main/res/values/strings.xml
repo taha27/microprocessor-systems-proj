@@ -38,4 +38,8 @@
     <string name="Brightness">Brightness: </string>
     <string name="refresh">Refresh</string>
     <string name="test">test</string>
+
+
+    <!-- CardView-->
+    <string name="detail">Details...</string>
 </resources>
