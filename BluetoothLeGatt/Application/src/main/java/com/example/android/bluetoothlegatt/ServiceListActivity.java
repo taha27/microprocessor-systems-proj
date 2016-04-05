@@ -32,6 +32,7 @@ public class ServiceListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActionBar().setTitle("Services");
         setContentView(R.layout.listitem_features);
 
         Intent intent = getIntent();
