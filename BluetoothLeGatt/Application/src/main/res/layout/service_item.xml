@@ -41,18 +41,20 @@
 
         <Button
             android:layout_height="87px"
-            android:text="Details..."
+            android:text="@string/detail"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:id="@+id/detail_button"
             android:theme="@style/myButton"
+            android:textColor="@android:color/white"
             android:layout_width="344px" />
 
         <Button
             android:layout_width="344px"
             android:layout_height="87px"
-            android:text="Update"
-            android:theme="@style/myButton"
+            android:text="@string/update"
+            android:textColor="@android:color/white"
+            android:theme="@style/myButton2"
             android:layout_toLeftOf="@id/detail_button"
             android:layout_alignParentBottom="true"
             android:id="@+id/update"

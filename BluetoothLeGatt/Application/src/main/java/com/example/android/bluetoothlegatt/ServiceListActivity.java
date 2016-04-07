@@ -47,10 +47,11 @@ public class ServiceListActivity extends Activity {
 
         //tests data
         serviceDataItemList = new ArrayList<>();
-        serviceDataItemList.add(new ServiceDataItem("Tilt", "23", R.drawable.accelerometer));
-        serviceDataItemList.add(new ServiceDataItem("Roll", "25", R.drawable.accelerometer));
-        serviceDataItemList.add(new ServiceDataItem("Temperature", "35", R.drawable.temp));
-        serviceDataItemList.add(new ServiceDataItem("LED", "set values", R.drawable.temp));
+        serviceDataItemList.add(new ServiceDataItem("Pitch Angle", " 23", R.drawable.accelerometer));
+        serviceDataItemList.add(new ServiceDataItem("Roll Angle", " 25", R.drawable.accelerometer));
+        serviceDataItemList.add(new ServiceDataItem("Temperature", " 35", R.drawable.temp));
+        serviceDataItemList.add(new ServiceDataItem("LED speed", " set values", R.drawable.temp));
+        serviceDataItemList.add(new ServiceDataItem("Brithness", " set values", R.drawable.temp));
 
         mAdapter = new ServiceItemAdapter(this, serviceDataItemList);
         rv.setAdapter(mAdapter);

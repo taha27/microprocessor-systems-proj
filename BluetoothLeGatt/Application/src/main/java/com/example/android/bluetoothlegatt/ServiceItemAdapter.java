@@ -15,9 +15,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-/**
- * Created by Richard on 2016-04-04.
- */
 public class ServiceItemAdapter extends RecyclerView.Adapter<ServiceItemAdapter.ViewHolder> {
 
     private Context context;
