@@ -42,4 +42,5 @@
 
     <!-- CardView-->
     <string name="detail">Details...</string>
+    <string name="mode">Mode</string>
 </resources>

@@ -38,5 +38,5 @@ public class ServiceDataItem {
     public void setValue(String value) {
         this.value = value;
     }
-    
+
 }
