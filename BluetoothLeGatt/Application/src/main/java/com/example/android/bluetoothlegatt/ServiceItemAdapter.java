@@ -31,16 +31,18 @@ public class ServiceItemAdapter extends RecyclerView.Adapter<ServiceItemAdapter.
 
             private TextView title;
             private TextView value;
-            private ImageButton btn;
+            private Button btn;
             private ImageView image;
+            private  Button btns;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 cv = (CardView) itemView.findViewById(R.id.card_view);
                 title = (TextView) itemView.findViewById(R.id.service_title);
                 value = (TextView) itemView.findViewById(R.id.service_value);
-                btn = (ImageButton) itemView.findViewById(R.id.detail_button);
+                btn = (Button) itemView.findViewById(R.id.detail_button);
                 image = (ImageView) itemView.findViewById(R.id.image);
+                btns = (Button) itemView.findViewById(R.id.update);
             }
         }
 
@@ -58,10 +60,19 @@ public class ServiceItemAdapter extends RecyclerView.Adapter<ServiceItemAdapter.
             holder.btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast t = Toast.makeText(context, "Show details activity", Toast.LENGTH_LONG);
+                    Toast t = Toast.makeText(context, "Show details activity", Toast.LENGTH_SHORT);
                     t.show();
                 }
             });
+            holder.btns.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    Toast t = Toast.makeText(context, "Updates", Toast.LENGTH_SHORT);
+                    t.show();
+                }
+            });
+
         }
 
         @Override
