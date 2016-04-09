@@ -170,7 +170,6 @@ public class DeviceControlActivity extends Activity {
         mConnectionState = (TextView) findViewById(R.id.connection_state);
         mDataField = (TextView) findViewById(R.id.data_value);
         mBtn = (Button) findViewById(R.id.more_button) ;
-
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
