@@ -24,6 +24,8 @@ import java.util.HashMap;
 public class SampleGattAttributes {
     private static HashMap<String, String> attributes = new HashMap();
 
+    public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
+
     //Temperature Service (COPY_ENV_SENS_SERVICE_UUID) and  in sensor_service.c
     public static String TEMPERATURE_SERVICE = "42821a40-e477-11e2-82d0-0002a5d5c51b";
     //Temperature Characteristics (COPY_TEMP_CHAR_UUID)
