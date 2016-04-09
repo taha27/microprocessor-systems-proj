@@ -136,6 +136,8 @@ public class BluetoothLeService extends Service {
         // carried out as per profile specifications:
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
 
+        //Check the broadcast characteristic source
+
         /*---------------Check the broadcast characteristic source---------------*/
 
         // Specific to Temperature
