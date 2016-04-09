@@ -38,10 +38,10 @@ public class SampleGattAttributes {
     public static String PITCH_ANGLE_MEASUREMENT = "340a1b80-cf4b-11e1-ac36-0002a5d5c51b";
 
     //LED Service (COPY_ACC_SERVICE_UUID)
-    public static String LED_SETTINGS_SERVICE = "02366e80-cf3a-11e1-9ab4-0002a5d5c51b";
+    public static String LED_SETTINGS_SERVICE = "0b366e80-cf3a-11e1-9ab4-0002a5d5c51b";
     //LED Characteristics (COPY_FREE_FALL_UUID and COPY_ACC_UUID)
-    public static String LED_SWITCH_SETTING = "e23e78a0-cf4a-11e1-8ffc-0002a5d5c51b";
-    public static String LED_SPEED_SETTING = "340a1b80-cf4b-11e1-ac36-0002a5d5c51b";
+    public static String LED_SWITCH_SETTING = "0c366e80-cf3a-11e1-9ab4-0002a5d5c51b";
+    public static String LED_SPEED_SETTING = "0d366e80-cf3a-11e1-9ab4-0002a5d5c51b";
 
     static {
         // LED Service and Characteristics
