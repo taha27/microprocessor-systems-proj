@@ -423,4 +423,41 @@ public class BluetoothLeService extends Service {
 
         return mBluetoothGatt.getServices();
     }
+
+//    public void readCustomCharacteristic() {
+//        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+//            Log.w(TAG, "BluetoothAdapter not initialized");
+//            return;
+//        }
+//        /*check if the service is available on the device*/
+//        BluetoothGattService mCustomService = mBluetoothGatt.getService(UUID.fromString("00001110-0000-1000-8000-00805f9b34fb"));
+//        if(mCustomService == null){
+//            Log.w(TAG, "Custom BLE Service not found");
+//            return;
+//        }
+//        /*get the read characteristic from the service*/
+//        BluetoothGattCharacteristic mReadCharacteristic = mCustomService.getCharacteristic(UUID.fromString("00000002-0000-1000-8000-00805f9b34fb"));
+//        if(mBluetoothGatt.readCharacteristic(mReadCharacteristic) == false){
+//            Log.w(TAG, "Failed to read characteristic");
+//        }
+//    }
+//
+//    public void writeCustomCharacteristic(int value) {
+//        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+//            Log.w(TAG, "BluetoothAdapter not initialized");
+//            return;
+//        }
+//        /*check if the service is available on the device*/
+//        BluetoothGattService mCustomService = mBluetoothGatt.getService(UUID.fromString("00001110-0000-1000-8000-00805f9b34fb"));
+//        if(mCustomService == null){
+//            Log.w(TAG, "Custom BLE Service not found");
+//            return;
+//        }
+//        /*get the read characteristic from the service*/
+//        BluetoothGattCharacteristic mWriteCharacteristic = mCustomService.getCharacteristic(UUID.fromString("00000001-0000-1000-8000-00805f9b34fb"));
+//        mWriteCharacteristic.setValue(value,android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8,0);
+//        if(mBluetoothGatt.writeCharacteristic(mWriteCharacteristic) == false){
+//            Log.w(TAG, "Failed to write characteristic");
+//        }
+//    }
 }
