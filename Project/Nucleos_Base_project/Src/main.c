@@ -302,6 +302,7 @@ void User_Process(AxesRaw_t* p_axes)
   /* Check if the user has pushed the button */
   if(BSP_PB_GetState(BUTTON_KEY) == RESET)
   {
+		
     while (BSP_PB_GetState(BUTTON_KEY) == RESET);
     
     //BSP_LED_Toggle(LED2); //used for debugging (BSP_LED_Init() above must be also enabled)

@@ -310,18 +310,8 @@ tBleStatus Roll_Update(void)
 	int i = 0;
 	int j = 0;	
 	SPI_Read(&pBuffer, 5);
-
-	//validate buffer
-	while (pBuffer[3] != 0 && pBuffer[4] != 0)
-	{
-		SPI_Read(&pBuffer, 5);
-		if ( pBuffer[2] < 20 || pBuffer[2]>60)
-		{
-				pBuffer[3] = 1;
-		}
-	}
 	roll = pBuffer[0];
-	
+	printf("roll printed %d\n", roll);	
 	while(roll>0)
 	 {
 		 int_buff[i]=roll%10;
@@ -359,17 +349,8 @@ tBleStatus Pitch_Update(void)
 	int i = 0;
 	int j = 0;
 	SPI_Read(&pBuffer, 5);
-
-	//validate buffer
-	while (pBuffer[3] != 0  && pBuffer[4] != 0 )
-	{
-		SPI_Read(&pBuffer, 5);
-		if ( pBuffer[2] < 20 || pBuffer[2]>60)
-		{
-				pBuffer[3] = 1;
-		}
-	}
 	pitch = pBuffer[1];
+	printf("pitch printed %d\n", pitch);
   while(pitch>0)
 	 {
 		 int_buff[i]=pitch%10;
@@ -484,17 +465,9 @@ tBleStatus Temp_Update(void)
 	int i = 0;
 	int j = 0;
 	SPI_Read(&pBuffer, 5);
-
-	//validate buffer
-	while (pBuffer[3] != 0  && pBuffer[4] != 0 )
-	{
-		SPI_Read(&pBuffer, 5);
-		if ( pBuffer[2] < 20 || pBuffer[2]>60)
-		{
-				pBuffer[3] = 1;
-		}
-	}
 	temperature = pBuffer[2];
+	printf("roll printed %d\n", temperature);	
+
   while(temperature>0)
 	 {
 		 int_buff[i]=temperature%10;
