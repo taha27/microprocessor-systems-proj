@@ -115,7 +115,13 @@ typedef struct {
  *  @{
  */
 tBleStatus Add_Acc_Service(void);
-tBleStatus Acc_Update(AxesRaw_t *data);
+//tBleStatus Acc_Update(AxesRaw_t *data);
+tBleStatus Pitch_Notify(uint8_t pitch_value);
+tBleStatus Roll_Notify(uint8_t roll_value);
+tBleStatus Roll_Update(void);
+tBleStatus Pitch_Update(void);
+tBleStatus Temp_Update(void);
+tBleStatus Temp_Notify(uint8_t temps);
 tBleStatus Add_Environmental_Sensor_Service(void);
 void       setConnectable(void);
 void       enableNotification(void);

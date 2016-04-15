@@ -189,5 +189,22 @@ void PPP_IRQHandler(void)
 /**
  * @}
  */
+ 
+ void SPI_SendData(SPI_HandleTypeDef *hspi, uint16_t Data)
+{ 
+  /* Write in the DR register the data to be sent */
+  hspi->Instance->DR = Data;
+}
+
+/**
+  * @brief  Returns the most recent received data by the SPIx/I2Sx peripheral. 
+  * @param  *hspi: Pointer to the SPI handle. Its member Instance can point to either SPI1, SPI2 or SPI3 
+  * @retval The value of the received data.
+  */
+uint8_t SPI_ReceiveData(SPI_HandleTypeDef *hspi)
+{
+  /* Return the data in the DR register */
+  return hspi->Instance->DR;
+}
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

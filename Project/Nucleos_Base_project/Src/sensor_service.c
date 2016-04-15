@@ -57,10 +57,14 @@ volatile uint8_t set_connectable = 1;
 volatile uint16_t connection_handle = 0;
 volatile uint8_t notification_enabled = FALSE;
 volatile AxesRaw_t axes_data = {0, 0, 0};
+volatile uint32_t previous_roll, previous_pitch;
+volatile uint16_t previous_temperature;
 uint16_t sampleServHandle, TXCharHandle, RXCharHandle;
 uint16_t accServHandle, freeFallCharHandle, accCharHandle;
 uint16_t envSensServHandle, tempCharHandle, pressCharHandle, humidityCharHandle;
 
+
+volatile uint8_t pBuffer[5] = {0,0,0,0,0} ;
 #if NEW_SERVICES
   uint16_t timeServHandle, secondsCharHandle, minuteCharHandle;
   uint16_t ledServHandle, ledButtonCharHandle;
@@ -140,8 +144,9 @@ tBleStatus Add_Acc_Service(void)
   if (ret != BLE_STATUS_SUCCESS) goto fail;    
   
   COPY_FREE_FALL_UUID(uuid);
-  ret =  aci_gatt_add_char(accServHandle, UUID_TYPE_128, uuid, 1,
-                           CHAR_PROP_NOTIFY, ATTR_PERMISSION_NONE, 0,
+  ret =  aci_gatt_add_char(accServHandle, UUID_TYPE_128, uuid, 6,
+                           CHAR_PROP_NOTIFY|CHAR_PROP_READ, ATTR_PERMISSION_NONE, 
+													 GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
                            16, 0, &freeFallCharHandle);
   if (ret != BLE_STATUS_SUCCESS) goto fail;
   
@@ -168,14 +173,168 @@ fail:
  * @param  None
  * @retval tBleStatus Status
  */
-tBleStatus Free_Fall_Notify(void)
+//tBleStatus Free_Fall_Notify(void)
+//{  
+//  uint8_t val;
+//  tBleStatus ret;
+//	
+//  val = 0x01;	
+//  ret = aci_gatt_update_char_value(accServHandle, freeFallCharHandle, 0, 1,
+//                                   &val);
+//	
+//  if (ret != BLE_STATUS_SUCCESS){
+//    PRINTF("Error while updating ACC characteristic.\n") ;
+//    return BLE_STATUS_ERROR ;
+//  }
+//  return BLE_STATUS_SUCCESS;	
+//}
+
+///**
+// * @brief  Update acceleration characteristic value.
+// *
+// * @param  Structure containing acceleration value in mg
+// * @retval Status
+// */
+//tBleStatus Acc_Update(AxesRaw_t *data)
+//{  
+//  tBleStatus ret;    
+//  uint8_t buff[6];
+//    
+//  STORE_LE_16(buff,data->AXIS_X);
+//  STORE_LE_16(buff+2,data->AXIS_Y);
+//  STORE_LE_16(buff+4,data->AXIS_Z);
+//	
+//  ret = aci_gatt_update_char_value(accServHandle, accCharHandle, 0, 6, buff);
+//	
+//  if (ret != BLE_STATUS_SUCCESS){
+//    PRINTF("Error while updating ACC characteristic.\n") ;
+//    return BLE_STATUS_ERROR ;
+//  }
+//  return BLE_STATUS_SUCCESS;	
+//}
+
+/**
+ * @brief  Send a notification for a Pitch value change detection.
+ *
+ * @param  None
+ * @retval tBleStatus Status
+ */
+tBleStatus Pitch_Notify(uint8_t pitch_value)
 {  
-  uint8_t val;
-  tBleStatus ret;
+	uint8_t buff[4];	
+	int int_buff[3];
+	uint32_t pitch;
+  tBleStatus ret; 
+	int i = 0;
+	int j = 0;	
+
+	pitch = pitch_value;
+	//update iff changes exist
+	if (pitch != previous_pitch) {
+		previous_pitch = pitch;    
+		while(pitch>0)
+		 {
+			 int_buff[i]=pitch%10;
+			 pitch/=10;
+			 i++;
+		 }
+		while(i--)
+		{
+			buff[j] = int_buff[i]+'0';
+			j++;
+		}
+		
+		ret = aci_gatt_update_char_value(accServHandle, accCharHandle, 0, 4, buff);
+		
+		if (ret != BLE_STATUS_SUCCESS){
+			PRINTF("Error while updating ACC-pitch notify characteristic.\n") ;
+			return BLE_STATUS_ERROR ;
+		}
+	}
+  return BLE_STATUS_SUCCESS;	
+}
+
+/**
+ * @brief  Send a notification for a Roll value change detection.
+ *
+ * @param  None
+ * @retval tBleStatus Status
+ */
+tBleStatus Roll_Notify(uint8_t roll_value)
+{  
+	uint8_t buff[4];	
+	int int_buff[3];
+	uint32_t roll;
+  tBleStatus ret; 
+	int i = 0;
+	int j = 0;	
+
+	roll = roll_value;
+	//update iff changes exist
+	if (roll != previous_roll) {
+		previous_roll = roll;    
+		while(roll>0)
+		 {
+			 int_buff[i]=roll%10;
+			 roll/=10;
+			 i++;
+		 }
+		while(i--)
+		{
+			buff[j] = int_buff[i]+'0';
+			j++;
+		}
+		
+		ret = aci_gatt_update_char_value(accServHandle, accCharHandle, 0, 4, buff);
+		
+		if (ret != BLE_STATUS_SUCCESS){
+			PRINTF("Error while updating ACC-roll notify characteristic.\n") ;
+			return BLE_STATUS_ERROR ;
+		}
+	}
+  return BLE_STATUS_SUCCESS;	
+}
+
+/**
+ * @brief  Update acceleration(roll) characteristic value.
+ *
+ * @param  Structure containing acceleration value in degree
+ * @retval Status
+ */
+tBleStatus Roll_Update(void)
+{  
+	uint8_t buff[4];	
+	int int_buff[3];
+	uint32_t roll;
+  tBleStatus ret; 
+	int i = 0;
+	int j = 0;	
+	SPI_Read(&pBuffer, 5);
+
+	//validate buffer
+	while (pBuffer[3] != 0 && pBuffer[4] != 0)
+	{
+		SPI_Read(&pBuffer, 5);
+		if ( pBuffer[2] < 20 || pBuffer[2]>60)
+		{
+				pBuffer[3] = 1;
+		}
+	}
+	roll = pBuffer[0];
 	
-  val = 0x01;	
-  ret = aci_gatt_update_char_value(accServHandle, freeFallCharHandle, 0, 1,
-                                   &val);
+	while(roll>0)
+	 {
+		 int_buff[i]=roll%10;
+		 roll/=10;
+		 i++;
+	 }
+	while(i--)
+	{
+		buff[j] = int_buff[i]+'0';
+		j++;
+	}
+	
+  ret = aci_gatt_update_char_value(accServHandle, accCharHandle, 0, 4, buff);
 	
   if (ret != BLE_STATUS_SUCCESS){
     PRINTF("Error while updating ACC characteristic.\n") ;
@@ -185,21 +344,45 @@ tBleStatus Free_Fall_Notify(void)
 }
 
 /**
- * @brief  Update acceleration characteristic value.
+ * @brief  Update acceleration(pitch) characteristic value.
  *
- * @param  Structure containing acceleration value in mg
+ * @param  Structure containing acceleration value in degree
  * @retval Status
  */
-tBleStatus Acc_Update(AxesRaw_t *data)
-{  
-  tBleStatus ret;    
-  uint8_t buff[6];
-    
-  STORE_LE_16(buff,data->AXIS_X);
-  STORE_LE_16(buff+2,data->AXIS_Y);
-  STORE_LE_16(buff+4,data->AXIS_Z);
+tBleStatus Pitch_Update(void)
+{ 
+	uint8_t buff[4];	
+	int int_buff[3];
+	uint32_t pitch;
+  tBleStatus ret;
 	
-  ret = aci_gatt_update_char_value(accServHandle, accCharHandle, 0, 6, buff);
+	int i = 0;
+	int j = 0;
+	SPI_Read(&pBuffer, 5);
+
+	//validate buffer
+	while (pBuffer[3] != 0  && pBuffer[4] != 0 )
+	{
+		SPI_Read(&pBuffer, 5);
+		if ( pBuffer[2] < 20 || pBuffer[2]>60)
+		{
+				pBuffer[3] = 1;
+		}
+	}
+	pitch = pBuffer[1];
+  while(pitch>0)
+	 {
+		 int_buff[i]=pitch%10;
+		 pitch/=10;
+		 i++;
+	 }
+	while(i--)
+	{
+		buff[j] = int_buff[i]+'0';
+		j++;
+	}
+	
+  ret = aci_gatt_update_char_value(accServHandle, freeFallCharHandle, 0, 4, buff );
 	
   if (ret != BLE_STATUS_SUCCESS){
     PRINTF("Error while updating ACC characteristic.\n") ;
@@ -207,7 +390,6 @@ tBleStatus Acc_Update(AxesRaw_t *data)
   }
   return BLE_STATUS_SUCCESS;	
 }
-
 /**
  * @brief  Add the Environmental Sensor service.
  *
@@ -218,9 +400,9 @@ tBleStatus Add_Environmental_Sensor_Service(void)
 {
   tBleStatus ret;
   uint8_t uuid[16];
-//  uint16_t uuid16;
-//  charactFormat charFormat;
-//  uint16_t descHandle;
+  uint16_t uuid16;
+  charactFormat charFormat;
+  uint16_t descHandle;
   
   COPY_ENV_SENS_SERVICE_UUID(uuid);
   ret = aci_gatt_add_serv(UUID_TYPE_128,  uuid, PRIMARY_SERVICE, 10,
@@ -229,34 +411,34 @@ tBleStatus Add_Environmental_Sensor_Service(void)
   
   /* Temperature Characteristic */
   COPY_TEMP_CHAR_UUID(uuid);  
-  ret =  aci_gatt_add_char(envSensServHandle, UUID_TYPE_128, uuid, 2,
-                           CHAR_PROP_READ, ATTR_PERMISSION_NONE,
+  ret =  aci_gatt_add_char(envSensServHandle, UUID_TYPE_128, uuid, 6,
+                           CHAR_PROP_READ|CHAR_PROP_NOTIFY, ATTR_PERMISSION_NONE,
                            GATT_NOTIFY_READ_REQ_AND_WAIT_FOR_APPL_RESP,
                            16, 0, &tempCharHandle);
   if (ret != BLE_STATUS_SUCCESS) goto fail;
   
-//  charFormat.format = FORMAT_SINT16;
-//  charFormat.exp = -1;
-//  charFormat.unit = UNIT_TEMP_CELSIUS;
-//  charFormat.name_space = 0;
-//  charFormat.desc = 0;
-//  
-//  uuid16 = CHAR_FORMAT_DESC_UUID;
-//  
-//  ret = aci_gatt_add_char_desc(envSensServHandle,
-//                               tempCharHandle,
-//                               UUID_TYPE_16,
-//                               (uint8_t *)&uuid16, 
-//                               7,
-//                               7,
-//                               (void *)&charFormat, 
-//                               ATTR_PERMISSION_NONE,
-//                               ATTR_ACCESS_READ_ONLY,
-//                               0,
-//                               16,
-//                               FALSE,
-//                               &descHandle);
-//  if (ret != BLE_STATUS_SUCCESS) goto fail;
+  charFormat.format = FORMAT_SINT16;
+  charFormat.exp = -1;
+  charFormat.unit = UNIT_TEMP_CELSIUS;
+  charFormat.name_space = 0;
+  charFormat.desc = 0;
+  
+  uuid16 = CHAR_FORMAT_DESC_UUID;
+  
+  ret = aci_gatt_add_char_desc(envSensServHandle,
+                               tempCharHandle,
+                               UUID_TYPE_16,
+                               (uint8_t *)&uuid16, 
+                               7,
+                               7,
+                               (void *)&charFormat, 
+                               ATTR_PERMISSION_NONE,
+                               ATTR_ACCESS_READ_ONLY,
+                               0,
+                               16,
+                               FALSE,
+                               &descHandle);
+  if (ret != BLE_STATUS_SUCCESS) goto fail;
   
   PRINTF("Service ENV_SENS added. Handle 0x%04X, TEMP Charac handle: 0x%04X, PRESS Charac handle: 0x%04X, HUMID Charac handle: 0x%04X\n",envSensServHandle, tempCharHandle, pressCharHandle, humidityCharHandle);	
   return BLE_STATUS_SUCCESS; 
@@ -272,12 +454,60 @@ fail:
  * @param  Temperature in tenths of degree 
  * @retval Status
  */
-tBleStatus Temp_Update(int16_t temp)
+//tBleStatus Temp_Update(int16_t temp)
+//{  
+//  tBleStatus ret;
+//  
+//  ret = aci_gatt_update_char_value(envSensServHandle, tempCharHandle, 0, 2,
+//                                   (uint8_t*)&temp);
+//  
+//  if (ret != BLE_STATUS_SUCCESS){
+//    PRINTF("Error while updating TEMP characteristic.\n") ;
+//    return BLE_STATUS_ERROR ;
+//  }
+//  return BLE_STATUS_SUCCESS;
+//	
+//}
+
+/**
+ * @brief  Update temperature characteristic value.
+ * @param  Temperature in tenths of degree 
+ * @retval Status
+ */
+tBleStatus Temp_Update(void)
 {  
   tBleStatus ret;
-  
-  ret = aci_gatt_update_char_value(envSensServHandle, tempCharHandle, 0, 2,
-                                   (uint8_t*)&temp);
+	uint8_t buff[2];	
+	int int_buff[2];
+	uint16_t temperature;
+
+	int i = 0;
+	int j = 0;
+	SPI_Read(&pBuffer, 5);
+
+	//validate buffer
+	while (pBuffer[3] != 0  && pBuffer[4] != 0 )
+	{
+		SPI_Read(&pBuffer, 5);
+		if ( pBuffer[2] < 20 || pBuffer[2]>60)
+		{
+				pBuffer[3] = 1;
+		}
+	}
+	temperature = pBuffer[2];
+  while(temperature>0)
+	 {
+		 int_buff[i]=temperature%10;
+		 temperature/=10;
+		 i++;
+	 }
+	while(i--)
+	{
+		buff[j] = int_buff[i]+'0';
+		j++;
+	}
+	
+  ret = aci_gatt_update_char_value(envSensServHandle, tempCharHandle, 0, 2, buff);
   
   if (ret != BLE_STATUS_SUCCESS){
     PRINTF("Error while updating TEMP characteristic.\n") ;
@@ -285,6 +515,45 @@ tBleStatus Temp_Update(int16_t temp)
   }
   return BLE_STATUS_SUCCESS;
 	
+}
+
+/**
+ * @brief  Send a notification for a temperature value change detection.
+ *
+ * @param  void
+ * @retval Status
+ */
+tBleStatus Temp_Notify(uint8_t temps)
+{ 
+	int i =0;
+	int j =0;
+	uint8_t buff[2];	
+	int int_buff[2];
+	uint16_t temperature;
+  tBleStatus ret;
+
+	temperature = temps;
+	if (temperature != previous_temperature) {
+		while(temperature>0)
+		 {
+			 int_buff[i]=temperature%10;
+			 temperature/=10;
+			 i++;
+		 }
+		while(i--)
+		{
+			buff[j] = int_buff[i]+'0';
+			j++;
+		}
+		
+		ret = aci_gatt_update_char_value(envSensServHandle, tempCharHandle, 0, 2, buff);
+		
+		if (ret != BLE_STATUS_SUCCESS){
+			PRINTF("Error while updating temp Notify characteristic.\n") ;
+			return BLE_STATUS_ERROR ;
+		}
+	}
+  return BLE_STATUS_SUCCESS;	
 }
 
 /**
@@ -364,16 +633,15 @@ void GAP_DisconnectionComplete_CB(void)
 void Read_Request_CB(uint16_t handle)
 {  
   if(handle == accCharHandle + 1){
-    Acc_Update((AxesRaw_t*)&axes_data);
-  }  
+		Pitch_Update();
+
+  }
+  else if (handle == freeFallCharHandle+1) {
+		Roll_Update();
+
+	}
   else if(handle == tempCharHandle + 1){
-    int16_t data;
-    data = 210 + ((uint64_t)rand()*15)/RAND_MAX; //sensor emulation        
-    Acc_Update((AxesRaw_t*)&axes_data); //FIXME: to overcome issue on Android App
-                                        // If the user button is not pressed within
-                                        // a short time after the connection,
-                                        // a pop-up reports a "No valid characteristics found" error.
-    Temp_Update(data);
+    Temp_Update();
   }
   
   //EXIT:

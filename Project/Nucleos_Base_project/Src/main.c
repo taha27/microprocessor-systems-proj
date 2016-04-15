@@ -46,7 +46,7 @@
 #include "debug.h"
 #include "stm32_bluenrg_ble.h"
 #include "bluenrg_utils.h"
-
+#include "SPI_Config.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -158,10 +158,11 @@ int main(void)
   
   /* Initialize the BlueNRG HCI */
   HCI_Init();
-
+	
   /* Reset BlueNRG hardware */
   BlueNRG_RST();
-    
+  
+	SPI_Init();
   /* get the BlueNRG HW and FW versions */
   getBlueNRGVersion(&hwVersion, &fwVersion);
 
@@ -312,7 +313,7 @@ void User_Process(AxesRaw_t* p_axes)
       p_axes->AXIS_Y -= 1;
       p_axes->AXIS_Z += 2;
       //PRINTF("ACC: X=%6d Y=%6d Z=%6d\r\n", p_axes->AXIS_X, p_axes->AXIS_Y, p_axes->AXIS_Z);
-      Acc_Update(p_axes);
+      //Acc_Update(p_axes);
     }
   }
 }
