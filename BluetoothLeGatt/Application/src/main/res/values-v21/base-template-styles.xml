@@ -21,13 +21,4 @@
     <style name="Theme.Base" parent="android:Theme.Material.Light">
     </style>
 
-    <style name="myButton" parent="android:Theme.Material.Light">
-        <item name="android:colorButtonNormal">@android:color/darker_gray</item>
-        <item name="android:colorControlHighlight">@android:color/holo_green_dark</item>
-    </style>
-
-    <style name="myButton2" parent="android:Theme.Material.Light">
-        <item name="android:colorButtonNormal">@android:color/holo_blue_light</item>
-        <item name="android:colorControlHighlight">@android:color/holo_purple</item>
-    </style>
 </resources>

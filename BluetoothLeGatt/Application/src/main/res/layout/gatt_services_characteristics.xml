@@ -41,14 +41,34 @@
                   android:layout_height="wrap_content"
                   android:text="@string/label_state"
                   android:textSize="18sp"/>
-        <Space android:layout_width="5dp"
-               android:layout_height="wrap_content"/>
+
+        <Space
+            android:layout_width="5dp"
+            android:layout_height="wrap_content" />
+
         <TextView android:id="@+id/connection_state"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:text="@string/disconnected"
                   android:textSize="18sp"/>
+
+        <Space android:layout_width="5dp"
+               android:layout_height="wrap_content"/>
     </LinearLayout>
+
+    <TextView android:id="@+id/pwm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/PWM"
+        android:textSize="18sp"/>
+    <Space android:layout_width="5dp"
+        android:layout_height="wrap_content"/>
+    <SeekBar
+        android:layout_width="match_parent"
+        android:max="20"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar" />
+
     <LinearLayout android:orientation="horizontal"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -64,18 +84,8 @@
                   android:layout_height="wrap_content"
                   android:text="@string/no_data"
                   android:textSize="18sp"/>
-
     </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/more_button"
-        android:text="@string/more"
-        android:theme="@style/myButton"
-        android:textColor="@android:color/white"
-        />
     <ExpandableListView android:id="@+id/gatt_services_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
 </LinearLayout>

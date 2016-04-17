@@ -18,9 +18,8 @@ repositories {
 dependencies {
     compile "com.android.support:support-v4:23.0.0"
     compile "com.android.support:support-v13:23.0.0"
-    compile 'com.android.support:cardview-v7:21.0.+'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
-    compile 'com.android.support:design:23.1.1'}
+    compile "com.android.support:cardview-v7:23.0.0"
+}
 
 // The sample build uses multiple directories to
 // keep boilerplate and common code separate from
@@ -35,7 +34,7 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 23
     }
 

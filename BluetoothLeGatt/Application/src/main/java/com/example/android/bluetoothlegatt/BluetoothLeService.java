@@ -32,6 +32,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,17 +64,22 @@ public class BluetoothLeService extends Service {
     public final static String EXTRA_DATA =
             "com.example.bluetooth.le.EXTRA_DATA";
 
-    // UUID declarations for temp and angles
-    public final static UUID UUID_TEMPERATURE_MEASUREMENT =
-            UUID.fromString(SampleGattAttributes.TEMPERATURE_MEASUREMENT);
-    public final static UUID UUID_ROLL_ANGLE_MEASUREMENT =
-            UUID.fromString(SampleGattAttributes.ROLL_ANGLE_MEASUREMENT);
-    public final static UUID UUID_PITCH_ANGLE_MEASUREMENT =
-            UUID.fromString(SampleGattAttributes.PITCH_ANGLE_MEASUREMENT);
-    public final static UUID UUID_LED_SWITCH_SETTING =
-            UUID.fromString(SampleGattAttributes.LED_SWITCH_SETTING);
-    public final static UUID UUID_LED_SPEED_SETTING =
-            UUID.fromString(SampleGattAttributes.LED_SPEED_SETTING);
+    //Temperature Service (COPY_ENV_SENS_SERVICE_UUID) and  in sensor_service.c
+    public static String TEMPERATURE_SERVICE = "42821a40-e477-11e2-82d0-0002a5d5c51b";
+    //Temperature Characteristics (COPY_TEMP_CHAR_UUID)
+    public static String TEMPERATURE_MEASUREMENT = "a32e5520-e477-11e2-a9e3-0002a5d5c51b";
+
+    //Accelerometer Service (COPY_ACC_SERVICE_UUID)
+    public static String ACCELEROMETER_SERVICE = "02366e80-cf3a-11e1-9ab4-0002a5d5c51b";
+    //Accelerometer Characteristics (COPY_FREE_FALL_UUID and COPY_ACC_UUID)
+    public static String ROLL_ANGLE_MEASUREMENT = "e23e78a0-cf4a-11e1-8ffc-0002a5d5c51b";
+    public static String PITCH_ANGLE_MEASUREMENT = "340a1b80-cf4b-11e1-ac36-0002a5d5c51b";
+
+    //LED Service
+    public static String LED_SETTINGS_SERVICE = "ab366e80-cf3a-11e1-9ab4-0002a5d5c51b";
+    //LED Characteristics
+    public static String LED_SWITCH_SETTING = "bc366e80-cf3a-11e1-9ab4-0002a5d5c51b";
+    public static String LED_SPEED_SETTING = "0d366e80-cf3a-11e1-9ab4-0002a5d5c51b";
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -135,86 +141,36 @@ public class BluetoothLeService extends Service {
         // This is special handling for the Heart Rate Measurement profile.  Data parsing is
         // carried out as per profile specifications:
         // http://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
-
-        //Check the broadcast characteristic source
-
-        /*---------------Check the broadcast characteristic source---------------*/
-
-        // Specific to Temperature
-        if (UUID_TEMPERATURE_MEASUREMENT.equals(characteristic.getUuid())) {
+        if (TEMPERATURE_MEASUREMENT.equals(characteristic.getUuid())) {
             int flag = characteristic.getProperties();
             int format = -1;
             if ((flag & 0x01) != 0) {
                 format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                Log.d(TAG, "Temperature format UINT16.");
+                Log.d(TAG, "Heart rate format UINT16.");
             } else {
                 format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                Log.d(TAG, "Temperature format UINT8.");
+                Log.d(TAG, "Heart rate format UINT8.");
             }
             final int temperature = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("Received temperature: %d", temperature));
+            Log.d(TAG, String.format("Received heart rate: %d", temperature));
             intent.putExtra(EXTRA_DATA, String.valueOf(temperature));
-
-        // Specific to Roll Angle
-        } else if (UUID_ROLL_ANGLE_MEASUREMENT.equals(characteristic.getUuid())) {
+        }
+        else if (ROLL_ANGLE_MEASUREMENT.equals(characteristic.getUuid()) || PITCH_ANGLE_MEASUREMENT
+                .equals(characteristic.getUuid())) {
             int flag = characteristic.getProperties();
             int format = -1;
             if ((flag & 0x01) != 0) {
                 format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                Log.d(TAG, "Roll angle format UINT16.");
+                Log.d(TAG, "Heart rate format UINT16.");
             } else {
                 format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                Log.d(TAG, "Roll angle format UINT8.");
+                Log.d(TAG, "Heart rate format UINT8.");
             }
-            final int rollAngle = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("Received roll angle: %d", rollAngle));
-            intent.putExtra(EXTRA_DATA, String.valueOf(rollAngle));
-
-        // Specific to Pitch Angle
-        } else if (UUID_PITCH_ANGLE_MEASUREMENT.equals(characteristic.getUuid())) {
-            int flag = characteristic.getProperties();
-            int format = -1;
-            if ((flag & 0x01) != 0) {
-                format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                Log.d(TAG, "Pitch angle format UINT16.");
-            } else {
-                format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                Log.d(TAG, "Pitch angle format UINT8.");
-            }
-            final int pitchAngle = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("Received pitch angle: %d", pitchAngle));
-            intent.putExtra(EXTRA_DATA, String.valueOf(pitchAngle));
-
-        // Specific to LED Switch
-        } else if (UUID_LED_SWITCH_SETTING.equals(characteristic.getUuid())) {
-            int flag = characteristic.getProperties();
-            int format = -1;
-            if ((flag & 0x01) != 0) {
-                format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                Log.d(TAG, "LED switch format UINT16.");
-            } else {
-                format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                Log.d(TAG, "LED switch format UINT8.");
-            }
-            final int ledSwitch = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("The LED switch status is: %d", ledSwitch));
-            intent.putExtra(EXTRA_DATA, String.valueOf(ledSwitch));
-
-        // Specific to LED Speed
-        } else if (UUID_LED_SPEED_SETTING.equals(characteristic.getUuid())) {
-            int flag = characteristic.getProperties();
-            int format = -1;
-            if ((flag & 0x01) != 0) {
-                format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                Log.d(TAG, "LED speed format UINT16.");
-            } else {
-                format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                Log.d(TAG, "LED speed format UINT8.");
-            }
-            final int ledSpeed = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("The LED speed value is: %d", ledSpeed));
-            intent.putExtra(EXTRA_DATA, String.valueOf(ledSpeed));
-        } else {
+            final int temperature = characteristic.getIntValue(format, 1);
+            Log.d(TAG, String.format("Received heart rate: %d", temperature));
+            intent.putExtra(EXTRA_DATA, String.valueOf(temperature));
+        }
+        else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
             if (data != null && data.length > 0) {
@@ -371,45 +327,25 @@ public class BluetoothLeService extends Service {
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
 
-        // This is specific to Temperature Measurement
-        if (UUID_TEMPERATURE_MEASUREMENT.equals(characteristic.getUuid())) {
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
-        }
+        // This is specific to Heart Rate Measurement.
+//        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
+//            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
+//                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
+//            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
+//            mBluetoothGatt.writeDescriptor(descriptor);
+//        }
+    }
 
-        // This is specific to Roll Angle Measurement
-        if (UUID_ROLL_ANGLE_MEASUREMENT.equals(characteristic.getUuid())) {
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
-        }
+    public void setLedSpeedSetting (BluetoothGattCharacteristic bluetoothGattCharacteristic, int value){
 
-        // This is specific to Pitch Angle Measurement
-        if (UUID_PITCH_ANGLE_MEASUREMENT.equals(characteristic.getUuid())) {
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            return;
         }
+        byte[] bytes = ByteBuffer.allocate(4).putInt(value).array();
+        bluetoothGattCharacteristic.setValue(bytes);
+        mBluetoothGatt.writeCharacteristic(bluetoothGattCharacteristic);
 
-        // This is specific to LED Switch
-        if (UUID_LED_SWITCH_SETTING.equals(characteristic.getUuid())) {
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
-        }
-
-        // This is specific to LED Speed
-        if (UUID_LED_SPEED_SETTING.equals(characteristic.getUuid())) {
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
-        }
     }
 
     /**
@@ -423,41 +359,4 @@ public class BluetoothLeService extends Service {
 
         return mBluetoothGatt.getServices();
     }
-
-//    public void readCustomCharacteristic() {
-//        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-//            Log.w(TAG, "BluetoothAdapter not initialized");
-//            return;
-//        }
-//        /*check if the service is available on the device*/
-//        BluetoothGattService mCustomService = mBluetoothGatt.getService(UUID.fromString("00001110-0000-1000-8000-00805f9b34fb"));
-//        if(mCustomService == null){
-//            Log.w(TAG, "Custom BLE Service not found");
-//            return;
-//        }
-//        /*get the read characteristic from the service*/
-//        BluetoothGattCharacteristic mReadCharacteristic = mCustomService.getCharacteristic(UUID.fromString("00000002-0000-1000-8000-00805f9b34fb"));
-//        if(mBluetoothGatt.readCharacteristic(mReadCharacteristic) == false){
-//            Log.w(TAG, "Failed to read characteristic");
-//        }
-//    }
-//
-//    public void writeCustomCharacteristic(int value) {
-//        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
-//            Log.w(TAG, "BluetoothAdapter not initialized");
-//            return;
-//        }
-//        /*check if the service is available on the device*/
-//        BluetoothGattService mCustomService = mBluetoothGatt.getService(UUID.fromString("00001110-0000-1000-8000-00805f9b34fb"));
-//        if(mCustomService == null){
-//            Log.w(TAG, "Custom BLE Service not found");
-//            return;
-//        }
-//        /*get the read characteristic from the service*/
-//        BluetoothGattCharacteristic mWriteCharacteristic = mCustomService.getCharacteristic(UUID.fromString("00000001-0000-1000-8000-00805f9b34fb"));
-//        mWriteCharacteristic.setValue(value,android.bluetooth.BluetoothGattCharacteristic.FORMAT_UINT8,0);
-//        if(mBluetoothGatt.writeCharacteristic(mWriteCharacteristic) == false){
-//            Log.w(TAG, "Failed to write characteristic");
-//        }
-//    }
 }

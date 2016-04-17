@@ -31,8 +31,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.SeekBar;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
@@ -46,16 +46,16 @@ import java.util.List;
  * communicates with {@code BluetoothLeService}, which in turn interacts with the
  * Bluetooth LE API.
  */
-
 public class DeviceControlActivity extends Activity {
     private final static String TAG = DeviceControlActivity.class.getSimpleName();
 
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
+    private volatile int seekBarValue;
+    private SeekBar mSeekBar;
     private TextView mConnectionState;
     private TextView mDataField;
-    private Button mBtn;
     private String mDeviceName;
     private String mDeviceAddress;
     private ExpandableListView mGattServicesList;
@@ -98,6 +98,7 @@ public class DeviceControlActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
+
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 updateConnectionState(R.string.connected);
@@ -144,6 +145,11 @@ public class DeviceControlActivity extends Activity {
                             mBluetoothLeService.setCharacteristicNotification(
                                     characteristic, true);
                         }
+
+                        if((charaProp | BluetoothGattCharacteristic.PROPERTY_WRITE )>0 ||(
+                            charaProp | BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE )>0){
+                            mBluetoothLeService.setLedSpeedSetting( characteristic, seekBarValue);
+                        }
                         return true;
                     }
                     return false;
@@ -152,6 +158,7 @@ public class DeviceControlActivity extends Activity {
 
     private void clearUI() {
         mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
+        mDataField.setText(R.string.no_data);
     }
 
     @Override
@@ -169,12 +176,23 @@ public class DeviceControlActivity extends Activity {
         mGattServicesList.setOnChildClickListener(servicesListClickListner);
         mConnectionState = (TextView) findViewById(R.id.connection_state);
         mDataField = (TextView) findViewById(R.id.data_value);
-        mBtn = (Button) findViewById(R.id.more_button) ;
-        mBtn.setOnClickListener(new View.OnClickListener() {
+        mSeekBar = (SeekBar) findViewById(R.id.seekBar);
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent( DeviceControlActivity.this, ServiceListActivity.class);
-                startActivity(i);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.d("Progress", ""+seekBarValue);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 

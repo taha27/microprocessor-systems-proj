@@ -14,8 +14,6 @@
      limitations under the License.
 -->
 <resources>
-    <string name="Accempture">Accempture</string>
-
     <string name="ble_not_supported">BLE is not supported</string>
     <string name="label_data">Data:</string>
     <string name="label_device_address">Device address:</string>
@@ -35,14 +33,6 @@
     <string name="menu_disconnect">Disconnect</string>
     <string name="menu_scan">Scan</string>
     <string name="menu_stop">Stop</string>
-    <string name="Brightness">Brightness: </string>
-    <string name="refresh">Refresh</string>
-    <string name="test">test</string>
-
-
-    <!-- CardView-->
-    <string name="detail">Details...</string>
-    <string name="mode">Mode</string>
-    <string name="update">Update</string>
-    <string name="more">More...</string>
+    <string name="PWM">PWM</string>
+    <string name="BlueGr2">BlueG02</string>
 </resources>
