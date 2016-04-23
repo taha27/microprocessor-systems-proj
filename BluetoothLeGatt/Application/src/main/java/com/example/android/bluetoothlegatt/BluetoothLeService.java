@@ -335,6 +335,12 @@ public class BluetoothLeService extends Service {
 //            mBluetoothGatt.writeDescriptor(descriptor);
 //        }
     }
+    /**
+     * Write LED settings characteristic
+     *
+     * @param bluetoothGattCharacteristic Characteristic to be written to
+     * @param value The value that is sent to the Nucleo Board.
+     */
 
     public void setLedSpeedSetting (BluetoothGattCharacteristic bluetoothGattCharacteristic, int value){
 

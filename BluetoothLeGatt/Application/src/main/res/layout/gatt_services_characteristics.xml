@@ -56,6 +56,15 @@
                android:layout_height="wrap_content"/>
     </LinearLayout>
 
+    <Switch
+        android:text="@string/led_on"
+        android:textAlignment="gravity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LED_on_switch"
+        android:layout_gravity="right"
+        android:checked="true" />
+
     <TextView android:id="@+id/pwm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,11 +72,14 @@
         android:textSize="18sp"/>
     <Space android:layout_width="5dp"
         android:layout_height="wrap_content"/>
+
+
     <SeekBar
         android:layout_width="match_parent"
         android:max="20"
         android:layout_height="wrap_content"
         android:id="@+id/seekBar" />
+
 
     <LinearLayout android:orientation="horizontal"
                   android:layout_width="match_parent"

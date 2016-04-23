@@ -31,9 +31,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.SeekBar;
 import android.widget.SimpleExpandableListAdapter;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -58,6 +60,7 @@ public class DeviceControlActivity extends Activity {
     private TextView mDataField;
     private String mDeviceName;
     private String mDeviceAddress;
+    private Switch mSwitch;
     private ExpandableListView mGattServicesList;
     private BluetoothLeService mBluetoothLeService;
     private ArrayList<ArrayList<BluetoothGattCharacteristic>> mGattCharacteristics =
@@ -177,12 +180,38 @@ public class DeviceControlActivity extends Activity {
         mConnectionState = (TextView) findViewById(R.id.connection_state);
         mDataField = (TextView) findViewById(R.id.data_value);
         mSeekBar = (SeekBar) findViewById(R.id.seekBar);
+        mSwitch = (Switch) findViewById(R.id.LED_on_switch);
 
+
+        // Defaults the LED is set to ON if unchecked sends -1 to Nucleo Board to turn off LED
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    mBluetoothLeService.setLedSpeedSetting(mGattCharacteristics.get(5).get(1),
+                            seekBarValue);
+                }
+                else{
+                    mBluetoothLeService.setLedSpeedSetting(mGattCharacteristics.get(5).get(1),-1);
+                }
+            }
+        });
+
+        //Add onChangeListener to send data to the Nucleo board.
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBarValue = progress/100*20;
                 Log.d("Progress", ""+seekBarValue);
+                if (seekBarValue < 10 ){
+                    seekBarValue = seekBarValue%-10;
+                }
+                else{
+                    seekBarValue = seekBarValue%10;
+                }
+                // Not tested because unable to detect the LED service.
+                mBluetoothLeService.setLedSpeedSetting(mGattCharacteristics.get(5).get(1),seekBarValue);
             }
 
             @Override

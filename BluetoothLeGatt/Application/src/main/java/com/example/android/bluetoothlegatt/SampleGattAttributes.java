@@ -38,9 +38,9 @@ public class SampleGattAttributes {
     public static String ROLL_ANGLE_MEASUREMENT = "340a1b80-cf4b-11e1-ac36-0002a5d5c51b";
 
     //LED Service
-    public static String LED_SETTINGS_SERVICE = "ab366e80-cf3a-11e1-9ab4-0002a5d5c51b";
+    public static String LED_SETTINGS_SERVICE = "bb366e80-cf3a-11e1-9ab4-0002a5d5c51b";
     //LED Characteristics
-    public static String LED_SWITCH_SETTING = "bc366e80-cf3a-11e1-9ab4-0002a5d5c51b";
+    public static String LED_SWITCH_SETTING = "cc366e80-cf3a-11e1-9ab4-0002a5d5c51b";
     public static String LED_SPEED_SETTING = "0d366e80-cf3a-11e1-9ab4-0002a5d5c51b";
 
     static {

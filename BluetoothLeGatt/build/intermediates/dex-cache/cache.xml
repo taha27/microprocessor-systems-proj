@@ -2,6 +2,48 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="bb0ac3f3ee2d71854501cc28e52cc84a20209b41">
+        <dex dex="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\classes-0bc091b9c51a0e282da5ea49dcd73916de9ad967.jar" />
+    </item>
+    <item
+        jar="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8bd336eeae661e8311330284897ee07f8ebaa297">
+        <dex dex="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-b203ac4c4e47cffcd8729d1c09f85e975535216f.jar" />
+    </item>
+    <item
+        jar="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8413c27b45b7fe61dca4a98159f65e2cee215f5a">
+        <dex dex="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\classes-0675ab546c92b1bdcea85d34bd2d8d071ca096f8.jar" />
+    </item>
+    <item
+        jar="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5d4bccb885c8a89d066ecb6c4addb553a99a79a2">
+        <dex dex="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-f866708256eb7bed89b49609d23189c6a4cbae9a.jar" />
+    </item>
+    <item
+        jar="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="bb0ac3f3ee2d71854501cc28e52cc84a20209b41">
+        <dex dex="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\classes-568333906e30e9602a8cd000b55a9c2e10f8f00d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1ccbc26be2c465c622a48310e8092241b01abe80">
+        <dex dex="C:\Users\Richard\Documents\Git\final_project_ecse426\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\classes-c5c7f24de35fe6261739fe1eaf984268b26e934c.jar" />
+    </item>
+    <item
         jar="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.0.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
@@ -9,11 +51,11 @@
         <dex dex="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\classes-15e29b664a8d28dc2413cdc4ba677f4d0b4a5107.jar" />
     </item>
     <item
-        jar="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\libs\internal_impl-23.0.0.jar"
+        jar="C:\Users\Richard\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.0\support-annotations-23.0.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="8bd336eeae661e8311330284897ee07f8ebaa297">
-        <dex dex="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-0713c0cc68fc811e3f27ec5df60628be7c7b3324.jar" />
+        sha1="990e7f98a7bad86a40b1f0bcfeb039023afd0839">
+        <dex dex="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\support-annotations-23.0.0-6fa8528ee0d0a00ca8a7046ee401ef6f5faf9893.jar" />
     </item>
     <item
         jar="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\classes.jar"
@@ -30,18 +72,11 @@
         <dex dex="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-675b58a4ecbe206c8b9bdb505f0316ad9dfd152e.jar" />
     </item>
     <item
-        jar="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.0\jars\classes.jar"
+        jar="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.0\jars\libs\internal_impl-23.0.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="bb0ac3f3ee2d71854501cc28e52cc84a20209b41">
-        <dex dex="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\classes-568333906e30e9602a8cd000b55a9c2e10f8f00d.jar" />
-    </item>
-    <item
-        jar="C:\Users\Richard\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.0\support-annotations-23.0.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="990e7f98a7bad86a40b1f0bcfeb039023afd0839">
-        <dex dex="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\support-annotations-23.0.0-6fa8528ee0d0a00ca8a7046ee401ef6f5faf9893.jar" />
+        sha1="8bd336eeae661e8311330284897ee07f8ebaa297">
+        <dex dex="C:\Users\Richard\Downloads\BluetoothLeGatt\Application\build\intermediates\pre-dexed\debug\internal_impl-23.0.0-0713c0cc68fc811e3f27ec5df60628be7c7b3324.jar" />
     </item>
 
 </items>
